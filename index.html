@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YaZxOfficial - Developer Bisnis</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -10;
+    }
+
+    #music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: #00bcd4;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    #music-toggle img {
+      width: 24px;
+      height: 24px;
+    }
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+#bg-video {
+    min-width: 100%;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+  </style>
+</head>
+<body>
+
+<body>
+    <div class="video-background">
+        <video autoplay muted loop id="bg-video">
+            <source src="https://files.catbox.moe/gzvhe1.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+    </div>
+    
+  <!-- Tombol kontrol musik -->
+  <button id="music-toggle">
+    <img src="https://cdn-icons-png.flaticon.com/512/727/727245.png" alt="Volume" />
+  </button>
+  <audio id="bg-music" src="https://files.catbox.moe/ye2xap.mp3" preload="auto"></audio>
+
+  <!-- Konten utama website kamu lanjut di sini -->
+
+  <script>
+    const musicToggle = document.getElementById('music-toggle');
+    const bgMusic = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    musicToggle.addEventListener('click', () => {
+      if (isPlaying) {
+        bgMusic.pause();
+      } else {
+        bgMusic.play().catch(e => console.log("Autoplay error:", e));
+      }
+      isPlaying = !isPlaying;
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YaZxOfficial - Developer Bisnis</title>
+  
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      background-color: #111;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('https://i.ibb.co/hgbsTyc/cloud-dark.jpg') center center / cover no-repeat;
+      filter: brightness(0.3);
+      z-index: -3;
+    }
+
+    .rain {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: -2;
+      overflow: hidden;
+    }
+
+    .drop {
+      position: absolute;
+      width: 2px;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    .lightning {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    header, section, footer {
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+
+    h1, h2, h3 {
+      color: #00ffff;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .header-banner img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .intro {
+      margin-top: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    #about p {
+      max-width: 600px;
+      margin: auto;
+      margin-top: 1rem;
+      font-size: 1.05rem;
+    }
+
+    .gallery .row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .gallery img {
+      width: 160px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .product-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .product-row {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .product-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      width: 250px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .product-item:hover {
+      transform: scale(1.03);
+    }
+
+    .product-item img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      color: #000;
+      padding: 2rem;
+      max-width: 500px;
+      border-radius: 10px;
+      text-align: left;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .contact-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .contact-buttons a {
+      background: #00bcd4;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .contact-buttons a:hover {
+      background: #03a9f4;
+    }
+
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+    }
+
+    .nav-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .nav-button {
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      background: #03a9f4;
+      padding: 1rem;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .nav-button:hover {
+      background: #0288d1;
+    }
+
+    .footer-bottom {
+      border-top: 3px dashed #555;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+
+  <header>
+    <div class="header-banner">
+      <img src="https://files.catbox.moe/svm9oh.png" alt="Banner Bisnis"/>
+    </div>
+    <h1>YaZxOfficial</h1>
+    <p>Developer & Penyedia Layanan Script Bot</p>
+    <div class="intro">
+      <h2>Selamat Datang di Dunia Teknologi dan Inovasi</h2>
+      <p>Mari tumbuh bersama lewat produk dan solusi digital terbaik</p>
+    </div>
+  </header>
+
+  <section id="about">
+    <h2>Tentang Saya</h2>
+    <div class="intro">
+      <p>Halo! Saya 𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥, seorang pengembang dengan passion tinggi di bidang teknologi dan keamanan siber. Fokus saya adalah menciptakan solusi cerdas untuk kebutuhan digital masa kini.</p>
+    </div>
+  </section>
+
+  <section id="galeri">
+    <h2>Galeri</h2>
+    <div class="gallery">
+      <div class="row">
+        <img src="https://files.catbox.moe/j4qp12.jpg" alt="Image 1">
+        <img src="https://files.catbox.moe/s5phmv.jpg" alt="Image 2">
+      </div>
+      <div class="row single">
+        <img src="https://files.catbox.moe/uxtfou.jpg" alt="Image 3">
+      </div>
+    </div>
+  </section>
+
+  <section id="products">
+    <h2>Produk Unggulan</h2>
+    <div class="product-gallery">
+      <div class="product-row">
+        <div class="product-item" onclick="openModal('Surxrat 1.4 Public', 'Fitur menyadap OTP, hidupkan senter, ganti wallpaper, dll.')">
+          <img src="https://files.catbox.moe/jlqj8z.jpg" alt="Surxrat">
+          <h3>Surxrat 1.4</h3>
+          <p>Rp25.000</p>
+        </div>
+        <div class="product-item" onclick="openModal('Surxspy', 'Lihat semua notifikasi korban dengan mudah.')">
+          <img src="https://files.catbox.moe/bk25zi.jpg" alt="Surxspy">
+          <h3>Surxspy</h3>
+          <p>Rp45.000</p>
+        </div>
+        <div class="product-item" onclick="openModal('Script Bot WhatsApp', 'Bot WA dengan fitur lengkap.')">
+          <img src="https://files.catbox.moe/19c1uy.jpg" alt="Bot WA">
+          <h3>Bot WhatsApp</h3>
+          <p>Rp5.000</p>
+        </div>
+      </div>
+      <div class="product-row single">
+        <div class="product-item" onclick="openModal('Script Bot Telegram', 'Bot otomatis untuk Telegram.')">
+          <img src="https://files.catbox.moe/821xgj.jpg" alt="Bot Telegram">
+          <h3>Bot Telegram</h3>
+          <p>5.000</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="productModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalDescription"></p>
+    </div>
+  </div>
+
+  <section id="contact">
+    <h2>Hubungi Saya</h2>
+    <p>Ingin bekerja sama atau tanya-tanya? Silakan hubungi lewat link berikut:</p>
+    <div class="contact-buttons">
+      <a href="https://wa.me/6285723956572" target="_blank">WhatsApp</a>
+      <a href="https://t.me/YaZxOfficiall" target="_blank">Telegram</a>
+      <a href="https://whatsapp.com/channel/0029VaoeOmdGOj9ncHIO2L1H" target="_blank">Channel WA</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="nav-buttons">
+      <a href="page2.html" class="nav-button">Pembayaran</a>
+      <a href="page3.html" class="nav-button">Downloader</a>
+      <a href="page4.html" class="nav-button">Game</a>
+      <a href="page5.html" class="nav-button">AI Chat</a>
+      <a href="page99.html" class="nav-button">Sosial Media</a>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 - YaZxOfficial Developer.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Modal Produk
+    function openModal(title, description) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDescription').innerText = description;
+      document.getElementById('productModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('productModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('productModal');
+      if (event.target === modal) modal.style.display = 'none';
+    }
+
+    // Efek hujan
+    const rainContainer = document.getElementById('rain');
+    for (let i = 0; i < 100; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'drop';
+      drop.style.left = `${Math.random() * 100}vw`;
+      drop.style.animationDuration = `${0.5 + Math.random()}s`;
+      drop.style.animationDelay = `${Math.random() * 5}s`;
+      rainContainer.appendChild(drop);
+    }
+
+    // Efek suara + kilat
+    const lightning = document.getElementById('lightning');
+    const thunderAudio = document.getElementById("thunder-sound");
+    const rainAudio = document.getElementById("rain-sound");
+    rainAudio.volume = 0.4;
+
+    function flashLightningWithSound() {
+      lightning.style.opacity = '0.9';
+      thunderAudio.currentTime = 0;
+      thunderAudio.volume = 0.6 + Math.random() * 0.3;
+      thunderAudio.play();
+      setTimeout(() => {
+        lightning.style.opacity = '0';
+      }, 100);
+      setTimeout(flashLightningWithSound, Math.random() * 10000 + 6000);
+    }
+
+    flashLightningWithSound();
+  </script>
+</body>
+</html>
