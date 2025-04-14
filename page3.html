@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Downloader - Xbibz Official</title>
+<script>
+    
+
+    // Mencegah Klik Kanan
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Mencegah Kombinasi Tombol Inspect
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode == 123 || (event.ctrlKey && event.shiftKey && (event.keyCode == 73 || event.keyCode == 74)) || 
+            (event.ctrlKey && event.keyCode == 85)) {
+            event.preventDefault();
+        }
+    });
+
+    // Mendeteksi DevTools Terbuka
+    setInterval(function() {
+        let before = new Date().getTime();
+        debugger;
+        let after = new Date().getTime();
+        if (after - before > 100) {
+            document.body.innerHTML = "<h1>Mau Ngapain Lu Mek?</h1>";
+        }
+    }, 1000);
+    
+    let requestCount = 0;
+        setInterval(() => {
+            requestCount = 0; // Reset setiap 10 detik
+        }, 3000);
+    
+   document.addEventListener('click', function() {
+            requestCount++;
+            if (requestCount > 10) { // Jika lebih dari 10 klik dalam 10 detik, blokir
+                document.body.innerHTML = "<h1>Ddos? Apa itu Ddos</h1><p>Awowkkwkwkkwk Ddos JirðŸ˜¹</p>";
+            }
+        });
+
+    // Mencegah CURL & Bots
+    (function() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes("curl") || userAgent.includes("wget") || userAgent.includes("bot")) {
+            document.body.innerHTML = "<h1>Mau Ngapain Lu Mek?</h1>";
+        }
+    })();
+</script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin: 10px 0 0;
+        }
+
+        .downloader-section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .downloader-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .downloader-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .downloader-option {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin: 10px;
+            width: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .downloader-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .downloader-option img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+
+        .downloader-option h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .downloader-option p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .url-input {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .url-input input, .url-input select, .url-input button {
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .url-input button {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .url-input button:hover {
+            background-color: #2980b9;
+        }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            display: none;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Additional Aesthetic Styles */
+        .downloader-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .url-input input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .url-input select {
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            padding-right: 30px;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+        }
+
+        .url-input select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .url-input button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .url-input button:focus {
+            outline: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    
+.progress-container {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    margin-top: 10px;
+    height: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #3498db;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+</style>
+</head>
+<body>
+<!-- Animasi Bintang -->
+<div class="stars">
+<!-- Bintang-bintang akan di-generate oleh JavaScript -->
+</div>
+<header>
+<h1>Sosmed Downloader (Beta)</h1>
+<p>Download video dan Audio</p>
+</header>
+<section class="downloader-section">
+<section class="downloader-section">
+<h2>TikTok Downloader</h2>
+<p>Download TikTok videos:</p>
+<div class="url-input">
+<input id="tiktokUrl" placeholder="Paste TikTok video URL here..." type="text"/>
+<button onclick="downloadTikTokVideo()">Download Video</button>
+</div>
+<div class="loader" id="tiktokLoader"></div>
+<div class="progress-container" id="tiktokProgressContainer" style="display: none;">
+<div class="progress-bar" id="tiktokProgressBar"></div>
+</div>
+</section>
+
+<section class="downloader-section">
+<h2>YouTube Downloader</h2>
+<p>Download YouTube videos or music:</p>
+<div class="url-input">
+<input id="youtubeUrl" placeholder="Paste YouTube video URL here..." type="text"/>
+<button onclick="downloadYouTubeVideo()">Download Video</button>
+<button onclick="downloadYouTubeMusic()">Download Music</button>
+</div>
+<div class="loader" id="youtubeLoader"></div>
+<div class="progress-container" id="youtubeProgressContainer" style="display: none;">
+<div class="progress-bar" id="youtubeProgressBar"></div>
+</div>
+</section>
+</section>
+<footer>
+<p>© 2024 Xbibz Official. All rights reserved.</p>
+</footer>
+<script>
+function startDownload() {
+    const videoUrl = document.getElementById('videoUrl').value;
+    const format = document.getElementById('format').value;
+    const loader = document.getElementById('loader');
+
+    if (!videoUrl) {
+        alert('Please enter a valid URL.');
+        return;
+    }
+
+    // Tampilkan animasi loading
+    loader.style.display = 'block';
+
+    // Tentukan endpoint API berdasarkan URL dan format
+    let apiUrl = '';
+    if (videoUrl.includes('tiktok.com')) {
+        apiUrl = `https://api.betabotz.eu.org/api/download/tiktok?url=${encodeURIComponent(videoUrl)}&apikey=Btz-YfFu2`;
+    } else if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+        if (format === 'mp4') {
+            apiUrl = `https://api.betabotz.eu.org/api/download/ytmp4?url=${encodeURIComponent(videoUrl)}&apikey=Btz-YfFu2`;
+        } else {
+            apiUrl = `https://api.betabotz.eu.org/api/download/ytmp3?url=${encodeURIComponent(videoUrl)}&apikey=Btz-YfFu2`;
+        }
+    } else {
+        alert('Unsupported URL. Please enter a valid TikTok or YouTube URL.');
+        loader.style.display = 'none';
+        return;
+    }
+
+    // Mulai download dengan membuka URL API
+    setTimeout(() => {
+        loader.style.display = 'none';
+        window.open(apiUrl, '_blank');
+    }, 2000);
+}
+</script>
+</body>
+</html>

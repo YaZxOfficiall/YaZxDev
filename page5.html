@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat YaZx AI (Beta)</title>
+    <link rel="stylesheet" href="aixbibz.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"></div>
+        <h1>Chat 𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 AI </h1>
+    </div>
+    
+    <div class="chat-container" id="chat-container">
+        <div class="chat-message ai-message">
+            <div class="message-header">𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 AI </div>
+            <div class="message-content">
+                Halo! Saya adalah 𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 AI yang dikembangkan Oleh 𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 untuk Membantu Kebutuhan Anda, Apa yang bisa saya bantu hari ini? Anda bisa bertanya tentang apa saja, termasuk pertanyaan umum, pemrograman, atau topik lainnya.
+            </div>
+        </div>
+        
+        <div class="typing-indicator ai-message" id="typing-indicator">
+            <div class="message-header">𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 AI </div>
+            <div class="message-content">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="input-container">
+        <textarea id="message-input" placeholder="Ketik pesan Anda di sini..." rows="1"></textarea>
+        <label for="file-upload" class="upload-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17 8L12 3L7 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 3V15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </label>
+        <input type="file" id="file-upload" style="display: none;" accept=".txt,.pdf,.doc,.docx,.jpg,.png,.jpeg,.gif,.py,.sh,.env">
+        <button id="send-button" disabled>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+
+    <div id="upload-progress" style="display: none;">
+        <div id="progress-bar"></div>
+        <span id="progress-text">0%</span>
+    </div>
+
+    <div id="file-description-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Tambahkan Deskripsi Lu!</h3>
+            <textarea id="file-description" placeholder="Tambahin deskripsi untuk file ini..."></textarea>
+            <button id="send-file-button">Kirim</button>
+        </div>
+    </div>
+
+    <script src="xbibzai.js"></script>
+</body>
+</html>

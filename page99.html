@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Social Media</title>
+    <script>
+    
+
+    // Mencegah Klik Kanan
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Mencegah Kombinasi Tombol Inspect
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode == 123 || (event.ctrlKey && event.shiftKey && (event.keyCode == 73 || event.keyCode == 74)) || 
+            (event.ctrlKey && event.keyCode == 85)) {
+            event.preventDefault();
+        }
+    });
+
+    // Mendeteksi DevTools Terbuka
+    setInterval(function() {
+        let before = new Date().getTime();
+        debugger;
+        let after = new Date().getTime();
+        if (after - before > 100) {
+            document.body.innerHTML = "<h1>Mau Ngapain Lu Mek?</h1>";
+        }
+    }, 1000);
+    
+    let requestCount = 0;
+        setInterval(() => {
+            requestCount = 0; // Reset setiap 10 detik
+        }, 3000);
+    
+   document.addEventListener('click', function() {
+            requestCount++;
+            if (requestCount > 10) { // Jika lebih dari 10 klik dalam 10 detik, blokir
+                document.body.innerHTML = "<h1>Ddos? Apa itu Ddos wkwkwkðŸ˜¹</h1><p>Awowkkwkwkkwk Ddos JirðŸ˜¹</p>";
+            }
+        });
+
+    // Mencegah CURL & Bots
+    (function() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes("curl") || userAgent.includes("wget") || userAgent.includes("bot")) {
+            document.body.innerHTML = "<h1>Mau Ngapain Lu Mek?</h1>";
+        }
+    })();
+</script>
+    <link rel="stylesheet" href="xbibz.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop id="bg-video">
+            <source src="https://files.catbox.moe/mbvelw.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+    </div>
+    <div class="container">
+        <h1 class="title">𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 - Social Media</h1>
+        <div class="social-links">
+            <a href="https://t.me/@YazxOfficiall" class="social-button telegram" target="_blank">
+                <i class="fab fa-telegram"></i> Telegram
+            </a>
+            <a href="https://wa.me/6285723956572" class="social-button whatsapp" target="_blank">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="https://www.tiktok.com/@yazxofficiall" class="social-button tiktok" target="_blank">
+                <i class="fab fa-tiktok"></i>Tiktok
+            </a>
+            <a href="https://www.youtube.com/@YazxOfficiall" class="social-button tiktok" target="_blank">
+                <i class="fab fa-youtube"></i>Youtube
+            </a>
+        </div>
+    </div>
+</body>
+</html>

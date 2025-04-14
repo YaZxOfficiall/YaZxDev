@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Roket Luar Angkasa</title>
+  <script>
+    
+
+    // Mencegah Klik Kanan
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Mencegah Kombinasi Tombol Inspect
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode == 123 || (event.ctrlKey && event.shiftKey && (event.keyCode == 73 || event.keyCode == 74)) || 
+            (event.ctrlKey && event.keyCode == 85)) {
+            event.preventDefault();
+        }
+    });
+
+    // Mendeteksi DevTools Terbuka
+    setInterval(function() {
+        let before = new Date().getTime();
+        debugger;
+        let after = new Date().getTime();
+        if (after - before > 100) {
+            document.body.innerHTML = "<h1>Mau Ngapain Lu Mek?</h1>";
+        }
+    }, 1000);
+    
+    let requestCount = 0;
+        setInterval(() => {
+            requestCount = 0; // Reset setiap 10 detik
+        }, 3000);
+    
+   document.addEventListener('click', function() {
+            requestCount++;
+            if (requestCount > 10) { // Jika lebih dari 10 klik dalam 10 detik, blokir
+                document.body.innerHTML = "<h1>Ddos? Apa itu Ddos wkwkwkðŸ˜¹</h1><p>Awowkkwkwkkwk Ddos JirðŸ˜¹</p>";
+            }
+        });
+
+    // Mencegah CURL & Bots
+    (function() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes("curl") || userAgent.includes("wget") || userAgent.includes("bot")) {
+            document.body.innerHTML = "<h1>Mau Ngapain Lu Mek?</h1>";
+        }
+    })();
+</script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(180deg, #fbc2eb, #a6c1ee);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .game-container { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    .score {
+      position: absolute; top: 20px; right: 20px;
+      font-size: 24px; font-weight: bold; color: #333;
+      background: rgba(255, 255, 255, 0.8); padding: 10px 20px; border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100;
+    }
+    .mute-button {
+      position: absolute; bottom: 20px; right: 20px;
+      font-size: 16px; padding: 10px 20px;
+      background: #ff6b81; color: white; border: none;
+      border-radius: 5px; cursor: pointer; z-index: 101;
+    }
+    .rocket {
+      position: absolute; bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      width: 100px; height: 150px;
+      background: url('https://files.catbox.moe/v5lksq.png') no-repeat center center;
+      background-size: contain; transition: left 0.1s ease-in-out; z-index: 50;
+    }
+    .rocket-flame {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 60px;
+      background: radial-gradient(circle, rgba(255,150,0,1) 0%, rgba(255,80,0,1) 60%, rgba(255,0,0,0) 100%);
+      opacity: 0.8;
+      border-radius: 50%;
+      animation: flameAnimation 0.2s infinite alternate;
+    }
+    @keyframes flameAnimation {
+      0% { transform: translateX(-50%) scaleY(1); opacity: 0.9; }
+      100% { transform: translateX(-50%) scaleY(1.3); opacity: 0.5; }
+    }
+    .obstacle {
+      position: absolute; top: -100px; width: 50px; height: 50px;
+      background: radial-gradient(circle, #ff6b81, #ff4757); border-radius: 50%;
+      animation: fall 3s linear infinite; z-index: 40;
+    }
+    @keyframes fall { 0% { top: -100px; } 100% { top: 100vh; } }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div id="score" class="score">Score: 0</div>
+    <button class="mute-button" id="muteButton"> Mute</button>
+    <div class="rocket" id="rocket">
+      <div class="rocket-flame"></div>
+    </div>
+  </div>
+
+  <!-- Sound Effects -->
+  <audio id="backgroundMusic" src="https://www.fesliyanstudios.com/play-mp3/387" loop preload="auto"></audio>
+  <audio id="moveSound" src="https://www.fesliyanstudios.com/play-mp3/402" preload="auto"></audio>
+  <audio id="collisionSound" src="https://assets.mixkit.co/active_storage/sfx/2433/2433-preview.mp3" preload="auto"></audio>
+
+  <script>
+    let score = 0;
+    const rocket = document.getElementById('rocket');
+    const scoreDisplay = document.getElementById('score');
+    const gameContainer = document.querySelector('.game-container');
+
+    const moveSound = document.getElementById('moveSound');
+    const collisionSound = document.getElementById('collisionSound');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const muteButton = document.getElementById('muteButton');
+
+    backgroundMusic.volume = 0.3;
+    backgroundMusic.play().catch(() => console.log("Music autoplay blocked, user needs to interact first"));
+
+    function toggleMute() {
+      backgroundMusic.muted = !backgroundMusic.muted;
+      muteButton.textContent = backgroundMusic.muted ? " Unmute" : " Mute";
+    }
+    muteButton.addEventListener("click", toggleMute);
+
+    let rocketPosition = 50;
+
+    function playSound(sound) {
+      sound.currentTime = 0;
+      sound.play().catch(error => console.error("Sound play failed:", error));
+    }
+
+    function moveRocket(direction) {
+      if (direction === 'left' && rocketPosition > 0) {
+        rocketPosition -= 3;
+      } else if (direction === 'right' && rocketPosition < 100) {
+        rocketPosition += 3;
+      }
+      rocket.style.left = rocketPosition + '%';
+      playSound(moveSound);
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        moveRocket('left');
+      } else if (event.key === 'ArrowRight') {
+        moveRocket('right');
+      }
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (event) => {
+      touchStartX = event.touches[0].clientX;
+    });
+
+    document.addEventListener('touchmove', (event) => {
+      const touchEndX = event.touches[0].clientX;
+      const deltaX = touchEndX - touchStartX;
+      if (deltaX > 0) {
+        moveRocket('right');
+      } else if (deltaX < 0) {
+        moveRocket('left');
+      }
+      touchStartX = touchEndX;
+    });
+
+    function createObstacle() {
+      const obstacle = document.createElement('div');
+      obstacle.classList.add('obstacle');
+      obstacle.style.left = Math.random() * 90 + '%';
+      gameContainer.appendChild(obstacle);
+
+      const checkCollision = setInterval(() => {
+        const rocketRect = rocket.getBoundingClientRect();
+        const obstacleRect = obstacle.getBoundingClientRect();
+
+        if (
+          rocketRect.left < obstacleRect.right &&
+          rocketRect.right > obstacleRect.left &&
+          rocketRect.top < obstacleRect.bottom &&
+          rocketRect.bottom > obstacleRect.top
+        ) {
+          playSound(collisionSound);
+          alert('Game Over! Skor Anda: ' + score);
+          clearInterval(checkCollision);
+          window.location.reload();
+        }
+
+        if (obstacleRect.top > window.innerHeight) {
+          score++;
+          scoreDisplay.innerText = "Score: " + score;
+          obstacle.remove();
+          clearInterval(checkCollision);
+        }
+      }, 10);
+    }
+
+    setInterval(createObstacle, 2000);
+  </script>
+</body>
+</html>
