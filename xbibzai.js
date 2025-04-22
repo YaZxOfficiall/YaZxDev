@@ -99,7 +99,7 @@ async function sendMessage() {
         let response = await getGeminiResponse(messageText);
         
         // Tambahkan respons AI ke chat
-        addMessage('𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 AI (Beta)', response, 'ai-message');
+        addMessage('𝐘𝐚𝐙𝐱𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 AI', response, 'ai-message');
     }, Math.random() * 1000 + 1000); // Penundaan 1-2 detik
 }
 
