@@ -1,215 +1,210 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Roket Luar Angkasa</title>
-  <script>
-    
-
-    // Mencegah Klik Kanan
-    document.addEventListener('contextmenu', event => event.preventDefault());
-
-    // Mencegah Kombinasi Tombol Inspect
-    document.addEventListener('keydown', function (event) {
-        if (event.keyCode == 123 || (event.ctrlKey && event.shiftKey && (event.keyCode == 73 || event.keyCode == 74)) || 
-            (event.ctrlKey && event.keyCode == 85)) {
-            event.preventDefault();
-        }
-    });
-
-    // Mendeteksi DevTools Terbuka
-    setInterval(function() {
-        let before = new Date().getTime();
-        debugger;
-        let after = new Date().getTime();
-        if (after - before > 100) {
-            document.body.innerHTML = "<h1>Mau Ngapain Lu Mek?</h1>";
-        }
-    }, 1000);
-    
-    let requestCount = 0;
-        setInterval(() => {
-            requestCount = 0; // Reset setiap 10 detik
-        }, 3000);
-    
-   document.addEventListener('click', function() {
-            requestCount++;
-            if (requestCount > 10) { // Jika lebih dari 10 klik dalam 10 detik, blokir
-                document.body.innerHTML = "<h1>Ddos? Apa itu Ddos wkwkwkðŸ˜¹</h1><p>Awowkkwkwkkwk Ddos JirðŸ˜¹</p>";
-            }
-        });
-
-    // Mencegah CURL & Bots
-    (function() {
-        var userAgent = navigator.userAgent.toLowerCase();
-        if (userAgent.includes("curl") || userAgent.includes("wget") || userAgent.includes("bot")) {
-            document.body.innerHTML = "<h1>Mau Ngapain Lu Mek?</h1>";
-        }
-    })();
-</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Block Blast Clone</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(180deg, #fbc2eb, #a6c1ee);
-      overflow: hidden;
-      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      background: #1e2a38;
+      color: white;
     }
-    .game-container { position: relative; width: 100%; height: 100vh; overflow: hidden; }
-    .score {
-      position: absolute; top: 20px; right: 20px;
-      font-size: 24px; font-weight: bold; color: #333;
-      background: rgba(255, 255, 255, 0.8); padding: 10px 20px; border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100;
+    h1 {
+      margin-top: 20px;
     }
-    .mute-button {
-      position: absolute; bottom: 20px; right: 20px;
-      font-size: 16px; padding: 10px 20px;
-      background: #ff6b81; color: white; border: none;
-      border-radius: 5px; cursor: pointer; z-index: 101;
+    #score {
+      font-size: 24px;
+      margin: 10px;
     }
-    .rocket {
-      position: absolute; bottom: 20px; left: 50%;
-      transform: translateX(-50%);
-      width: 100px; height: 150px;
-      background: url('https://files.catbox.moe/v5lksq.png') no-repeat center center;
-      background-size: contain; transition: left 0.1s ease-in-out; z-index: 50;
+    #board {
+      display: grid;
+      grid-template-columns: repeat(8, 50px);
+      grid-template-rows: repeat(8, 50px);
+      gap: 2px;
+      margin: 20px 0;
+      background: #101820;
+      padding: 10px;
+      border-radius: 10px;
     }
-    .rocket-flame {
-      position: absolute;
-      bottom: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 30px;
-      height: 60px;
-      background: radial-gradient(circle, rgba(255,150,0,1) 0%, rgba(255,80,0,1) 60%, rgba(255,0,0,0) 100%);
-      opacity: 0.8;
-      border-radius: 50%;
-      animation: flameAnimation 0.2s infinite alternate;
+    .cell {
+      width: 50px;
+      height: 50px;
+      background-color: #22313f;
+      border-radius: 5px;
+      box-shadow: inset 0 0 4px #000;
     }
-    @keyframes flameAnimation {
-      0% { transform: translateX(-50%) scaleY(1); opacity: 0.9; }
-      100% { transform: translateX(-50%) scaleY(1.3); opacity: 0.5; }
+    .filled {
+      background-color: #f39c12;
+      box-shadow: inset -2px -2px 4px #d35400, inset 2px 2px 4px #f1c40f;
     }
-    .obstacle {
-      position: absolute; top: -100px; width: 50px; height: 50px;
-      background: radial-gradient(circle, #ff6b81, #ff4757); border-radius: 50%;
-      animation: fall 3s linear infinite; z-index: 40;
+    #pieces {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 20px;
     }
-    @keyframes fall { 0% { top: -100px; } 100% { top: 100vh; } }
+    .piece {
+      display: grid;
+      grid-template-columns: repeat(4, 20px);
+      grid-template-rows: repeat(4, 20px);
+      gap: 1px;
+      background: #34495e;
+      padding: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .block {
+      width: 20px;
+      height: 20px;
+      background-color: #e74c3c;
+      box-shadow: inset -1px -1px 2px #c0392b, inset 1px 1px 2px #ff6f61;
+      border-radius: 3px;
+    }
   </style>
 </head>
 <body>
-  <div class="game-container">
-    <div id="score" class="score">Score: 0</div>
-    <button class="mute-button" id="muteButton"> Mute</button>
-    <div class="rocket" id="rocket">
-      <div class="rocket-flame"></div>
-    </div>
-  </div>
-
-  <!-- Sound Effects -->
-  <audio id="backgroundMusic" src="https://www.fesliyanstudios.com/play-mp3/387" loop preload="auto"></audio>
-  <audio id="moveSound" src="https://www.fesliyanstudios.com/play-mp3/402" preload="auto"></audio>
-  <audio id="collisionSound" src="https://assets.mixkit.co/active_storage/sfx/2433/2433-preview.mp3" preload="auto"></audio>
-
-  <script>
+  <h1>Block Blast</h1>
+  <div id="score">Score: 0</div>
+  <div id="board"></div>
+  <div id="pieces"></div>  <script>
+    const board = document.getElementById("board");
+    const piecesContainer = document.getElementById("pieces");
+    const scoreDisplay = document.getElementById("score");
     let score = 0;
-    const rocket = document.getElementById('rocket');
-    const scoreDisplay = document.getElementById('score');
-    const gameContainer = document.querySelector('.game-container');
+    const grid = [];
 
-    const moveSound = document.getElementById('moveSound');
-    const collisionSound = document.getElementById('collisionSound');
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    const muteButton = document.getElementById('muteButton');
-
-    backgroundMusic.volume = 0.3;
-    backgroundMusic.play().catch(() => console.log("Music autoplay blocked, user needs to interact first"));
-
-    function toggleMute() {
-      backgroundMusic.muted = !backgroundMusic.muted;
-      muteButton.textContent = backgroundMusic.muted ? " Unmute" : " Mute";
-    }
-    muteButton.addEventListener("click", toggleMute);
-
-    let rocketPosition = 50;
-
-    function playSound(sound) {
-      sound.currentTime = 0;
-      sound.play().catch(error => console.error("Sound play failed:", error));
+    function createBoard() {
+      for (let i = 0; i < 8 * 8; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        board.appendChild(cell);
+        grid.push(cell);
+      }
     }
 
-    function moveRocket(direction) {
-      if (direction === 'left' && rocketPosition > 0) {
-        rocketPosition -= 3;
-      } else if (direction === 'right' && rocketPosition < 100) {
-        rocketPosition += 3;
-      }
-      rocket.style.left = rocketPosition + '%';
-      playSound(moveSound);
+    const pieceShapes = [
+      [[1,1],[1,1]],
+      [[1,1,1]],
+      [[1],[1],[1]],
+      [[1,0],[1,1]],
+      [[0,1],[1,1]],
+      [[1,1,1],[0,1,0]],
+      [[1,1,0],[0,1,1]],
+      [[1,1,1,1]],
+      [[1],[1],[1],[1]]
+    ];
+
+    function createPiece(shape) {
+      const piece = document.createElement("div");
+      piece.classList.add("piece");
+      piece.dataset.shape = JSON.stringify(shape);
+      shape.forEach((row, i) => {
+        row.forEach((cell, j) => {
+          const block = document.createElement("div");
+          if (cell) block.classList.add("block");
+          piece.appendChild(block);
+        });
+      });
+      piece.addEventListener("click", () => selectPiece(shape));
+      piecesContainer.appendChild(piece);
     }
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') {
-        moveRocket('left');
-      } else if (event.key === 'ArrowRight') {
-        moveRocket('right');
+    function generatePieces() {
+      piecesContainer.innerHTML = "";
+      for (let i = 0; i < 3; i++) {
+        const shape = pieceShapes[Math.floor(Math.random() * pieceShapes.length)];
+        createPiece(shape);
       }
-    });
+    }
 
-    let touchStartX = 0;
-    document.addEventListener('touchstart', (event) => {
-      touchStartX = event.touches[0].clientX;
-    });
+    function selectPiece(shape) {
+      alert("Klik pada papan untuk meletakkan blok.");
+      board.onclick = (e) => {
+        const idx = [...board.children].indexOf(e.target);
+        const x = idx % 8;
+        const y = Math.floor(idx / 8);
+        placePiece(shape, x, y);
+        board.onclick = null;
+      };
+    }
 
-    document.addEventListener('touchmove', (event) => {
-      const touchEndX = event.touches[0].clientX;
-      const deltaX = touchEndX - touchStartX;
-      if (deltaX > 0) {
-        moveRocket('right');
-      } else if (deltaX < 0) {
-        moveRocket('left');
-      }
-      touchStartX = touchEndX;
-    });
+    function placePiece(shape, x, y) {
+      const canPlace = shape.every((row, i) => {
+        return row.every((val, j) => {
+          if (!val) return true;
+          const xi = x + j;
+          const yi = y + i;
+          if (xi >= 8 || yi >= 8) return false;
+          const cell = grid[yi * 8 + xi];
+          return !cell.classList.contains("filled");
+        });
+      });
 
-    function createObstacle() {
-      const obstacle = document.createElement('div');
-      obstacle.classList.add('obstacle');
-      obstacle.style.left = Math.random() * 90 + '%';
-      gameContainer.appendChild(obstacle);
+      if (!canPlace) return alert("Tidak bisa ditempatkan di sini!");
 
-      const checkCollision = setInterval(() => {
-        const rocketRect = rocket.getBoundingClientRect();
-        const obstacleRect = obstacle.getBoundingClientRect();
+      shape.forEach((row, i) => {
+        row.forEach((val, j) => {
+          if (val) {
+            const xi = x + j;
+            const yi = y + i;
+            grid[yi * 8 + xi].classList.add("filled");
+          }
+        });
+      });
 
-        if (
-          rocketRect.left < obstacleRect.right &&
-          rocketRect.right > obstacleRect.left &&
-          rocketRect.top < obstacleRect.bottom &&
-          rocketRect.bottom > obstacleRect.top
-        ) {
-          playSound(collisionSound);
-          alert('Game Over! Skor Anda: ' + score);
-          clearInterval(checkCollision);
-          window.location.reload();
+      score += shape.flat().filter(Boolean).length;
+      scoreDisplay.innerText = "Score: " + score;
+      checkLines();
+      generatePieces();
+      checkGameOver();
+    }
+
+    function checkLines() {
+      for (let i = 0; i < 8; i++) {
+        let rowFull = true;
+        let colFull = true;
+        for (let j = 0; j < 8; j++) {
+          if (!grid[i * 8 + j].classList.contains("filled")) rowFull = false;
+          if (!grid[j * 8 + i].classList.contains("filled")) colFull = false;
         }
-
-        if (obstacleRect.top > window.innerHeight) {
-          score++;
-          scoreDisplay.innerText = "Score: " + score;
-          obstacle.remove();
-          clearInterval(checkCollision);
+        if (rowFull) {
+          for (let j = 0; j < 8; j++) grid[i * 8 + j].classList.remove("filled");
+          score += 8;
         }
-      }, 10);
+        if (colFull) {
+          for (let j = 0; j < 8; j++) grid[j * 8 + i].classList.remove("filled");
+          score += 8;
+        }
+      }
+      scoreDisplay.innerText = "Score: " + score;
     }
 
-    setInterval(createObstacle, 2000);
-  </script>
-</body>
+    function checkGameOver() {
+      const available = pieceShapes.some(shape => {
+        for (let y = 0; y < 8; y++) {
+          for (let x = 0; x < 8; x++) {
+            const canPlace = shape.every((row, i) => {
+              return row.every((val, j) => {
+                if (!val) return true;
+                const xi = x + j;
+                const yi = y + i;
+                if (xi >= 8 || yi >= 8) return false;
+                const cell = grid[yi * 8 + xi];
+                return !cell.classList.contains("filled");
+              });
+            });
+            if (canPlace) return true;
+          }
+        }
+        return false;
+      });
+      if (!available) alert("Game Over! Skor Anda: " + score);
+    }
+
+    createBoard();
+    generatePieces();
+  </script></body>
 </html>
