@@ -2,71 +2,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YaZxDev Air Battle</title>
+  <title>Galaxy Fighter</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-    body, html { width: 100%; height: 100%; overflow: hidden; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background: #000; }
     video#bg-video {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       object-fit: cover; z-index: -1;
     }
-    canvas { display: block; margin: auto; background: transparent; }
+    canvas { display: block; margin: auto; background: transparent; touch-action: none; }
     .hud {
+      position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; background: rgba(0, 0, 50, 0.6); padding: 4px 10px;
+      border-radius: 8px; color: #00e0ff; font-weight: bold; box-shadow: 0 0 8px #00e0ff;
+      font-size: 12px;
+      z-index: 2;
+    }
+    .progress-container {
       position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 15px; background: rgba(0,0,0,0.6); padding: 8px 15px;
-      border-radius: 10px; color: white; font-weight: bold;
+      width: 90%; height: 6px; background: rgba(0,0,50,0.6);
+      border-radius: 3px; overflow: hidden; box-shadow: 0 0 6px #00e0ff;
+      z-index: 2;
+    }
+    #progress-bar {
+      height: 100%; width: 0%; background: #00e0ff;
+      transition: width 0.2s;
     }
     #game-by, #music-btn {
-      position: absolute; top: 70px;
-      background: rgba(255,255,255,0.7); padding: 4px 10px;
-      border-radius: 8px; font-weight: bold;
+      position: absolute; top: 110px;
+      background: rgba(0, 0, 50, 0.6); padding: 4px 8px;
+      border-radius: 6px; font-weight: bold; color: #00e0ff; box-shadow: 0 0 8px #00e0ff;
+      font-size: 12px;
     }
-   #game-by {
-  position: absolute; top: 90px; left: 50%; transform: translateX(-50%);
-  background: rgba(255,255,255,0.7); padding: 4px 8px;
-  border-radius: 8px; font-weight: bold;
-}
-#music-btn {
-  position: absolute; top: 90px; right: 10px;
-  background: white; padding: 10px; border-radius: 50%; font-size: 20px;
-}
-    .joystick-container {
-      position: absolute; bottom: 20px; left: 20%;
-      transform: translateX(-50%);
-      width: 100px; height: 100px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 50%; touch-action: none;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 40px;
-    }
-    .fire-btn {
-      position: absolute; bottom: 20px; right: 20px;
-      width: 80px; height: 80px; background: rgba(255,0,0,0.7);
-      border-radius: 50%; color: white; font-size: 30px;
-      display: flex; align-items: center; justify-content: center;
-      touch-action: none;
-    }
+    #game-by { left: 50%; transform: translateX(-50%); }
+    #music-btn { right: 10px; background: rgba(0, 0, 50, 0.6); font-size: 18px; border-radius: 50%; }
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
   </style>
 </head>
 <body>
 <video id="bg-video" autoplay muted loop>
   <source src="https://files.catbox.moe/rn09rk.mp4" type="video/mp4" />
 </video>
+<div class="progress-container">
+  <div id="progress-bar"></div>
+</div>
 <canvas id="game" width="480" height="640"></canvas>
 <div class="hud">
-  <span>Nyawa lu: <span id="lives">🐒🐒🐒</span></span>
-  <span>Score lu: <span id="score">0</span></span>
+  <span>HP: <span id="lives">❤️❤️❤️</span></span>
+  <span>Score: <span id="score">0</span></span>
   <span>Level: <span id="level">1</span></span>
   <span>High Score: <span id="high-score">0</span></span>
-  <span>Kalah: <span id="defeats">0</span></span>
+  <span>Defeats: <span id="defeats">0</span></span>
 </div>
-<div id="game-by">Game by YaZxDev</div>
-<div id="music-btn">🎵</div>
-<div class="joystick-container" id="joystick">🕹️</div>
-<div class="fire-btn" id="fire-btn">🔥</div>
+<div id="game-by">Galaxy Fighter - YaZxDev</div>
+<div id="music-btn">🎶</div>
 <audio id="bg-music" src="https://files.catbox.moe/jev4p6.mp3" preload="auto" loop></audio>
-<audio id="boom-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_52c3b8d4b5.mp3" preload="auto"></audio>
-<script>
+<audio id="boom-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_52c3b8d4b5.mp3" preload="auto"></audio><script>
+// script game tetap sama
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const music = document.getElementById("bg-music");
@@ -78,8 +70,9 @@ const livesEl = document.getElementById("lives");
 const levelEl = document.getElementById("level");
 const highScoreEl = document.getElementById("high-score");
 const defeatsEl = document.getElementById("defeats");
+const progressBar = document.getElementById("progress-bar");
 
-let score = 0, lives = 3, level = 1;
+let score = 0, lives = 3, level = 1, progress = 0;
 let highScore = localStorage.getItem("highScore") || 0;
 let defeats = localStorage.getItem("defeats") || 0;
 highScoreEl.textContent = highScore;
@@ -92,14 +85,12 @@ const bullets = [], enemies = [], bosses = [];
 let targetX = player.x, targetY = player.y;
 
 function updateLivesDisplay() {
-  livesEl.textContent = "🐒".repeat(lives);
+  livesEl.textContent = "❤️".repeat(lives);
 }
 
 function shoot() {
   bullets.push({ x: player.x + player.width/2 - 2, y: player.y, width: 4, height: 10 });
 }
-document.getElementById("fire-btn").addEventListener("click", shoot);
-document.addEventListener("keydown", e => { if(e.key==" ") shoot(); });
 
 function drawPlayer() {
   ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
@@ -116,7 +107,7 @@ function spawnEnemies() {
   if (Math.random() < 0.02 + level * 0.005)
     enemies.push({ x: Math.random() * 440, y: -40, width: 100, height: 100, speed: 1 + level * 0.3 });
   if (level % 5 === 0 && bosses.length === 0)
-    bosses.push({ x: 120, y: -100, width: 200, height: 100, hp: 20 + level * 5, speed: 1 });
+    bosses.push({ x: Math.random() * 240, y: -150, width: 240, height: 120, hp: 20 + level * 5, speed: 1.2 });
 }
 function drawEnemies() {
   enemies.forEach((e,ei) => {
@@ -128,6 +119,7 @@ function drawEnemies() {
       if (collides(b,e)) {
         boomSound.play(); bullets.splice(bi,1); enemies.splice(ei,1);
         updateScore(1);
+        updateProgress(10);
       }
     });
   });
@@ -135,19 +127,30 @@ function drawEnemies() {
 function drawBosses() {
   bosses.forEach((boss,bi) => {
     boss.y += boss.speed;
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "darkred";
     ctx.fillRect(boss.x, boss.y, boss.width, boss.height);
+    ctx.fillStyle = "white";
+    ctx.font = "12px Orbitron";
+    ctx.fillText(`HP: ${boss.hp}`, boss.x + 10, boss.y + 20);
+
     bullets.forEach((b,bi2) => {
       if (collides(b,boss)) {
         bullets.splice(bi2,1); boss.hp -= 1;
         if (boss.hp <= 0) {
-          boomSound.play(); bosses.splice(bi,1); updateScore(200); level++;
+          boomSound.play(); bosses.splice(bi,1); updateScore(300); level++;
           levelEl.textContent = level;
+          progress = 0;
+          updateProgress(0);
         }
       }
     });
     if (collides(boss, player)) damagePlayer(bi);
   });
+}
+function updateProgress(val) {
+  progress += val;
+  if (progress > 100) progress = 100;
+  progressBar.style.width = progress + "%";
 }
 function collides(a,b) {
   return a.x < b.x + b.width && a.x + a.width > b.x &&
@@ -165,44 +168,71 @@ function updateScore(val) {
     localStorage.setItem("highScore", highScore);
     highScoreEl.textContent = highScore;
   }
+  if (score % 50 === 0 && score !== 0) {
+    level++;
+    levelEl.textContent = level;
+    progress = 0;
+    updateProgress(0);
+  }
 }
 function resetGame() {
   defeats++;
   localStorage.setItem("defeats", defeats);
   defeatsEl.textContent = defeats;
-  alert(`Yahh Tololl Ga Bisa Main Goblok!\nScore luu: ${score}`);
+  alert(`You Lost!\nFinal Score: ${score}`);
   lives = 3; score = 0; level = 1;
   bullets.length = 0; enemies.length = 0; bosses.length = 0;
+  progress = 0;
+  updateProgress(0);
   updateLivesDisplay();
   scoreEl.textContent = score;
   levelEl.textContent = level;
 }
+
 function gameLoop() {
   player.x += (targetX - player.x) * 0.1;
   player.y += (targetY - player.y) * 0.1;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawPlayer(); drawBullets(); spawnEnemies(); drawEnemies(); drawBosses();
+
+  enemies.forEach(enemy => {
+    if (Math.abs(enemy.x + enemy.width/2 - (player.x + player.width/2)) < 30) {
+      shoot();
+    }
+  });
+  bosses.forEach(boss => {
+    if (Math.abs(boss.x + boss.width/2 - (player.x + player.width/2)) < 50) {
+      shoot();
+    }
+  });
+
   requestAnimationFrame(gameLoop);
 }
-let joystick = document.getElementById("joystick"), dragging = false, origin = {x:0,y:0};
-joystick.addEventListener("touchstart", e => {
+
+let dragging = false;
+canvas.addEventListener("touchstart", (e) => {
   dragging = true;
-  origin.x = e.touches[0].clientX;
-  origin.y = e.touches[0].clientY;
+  movePlayer(e.touches[0]);
 });
-joystick.addEventListener("touchmove", e => {
+canvas.addEventListener("touchmove", (e) => {
   if (!dragging) return;
-  let dx = e.touches[0].clientX - origin.x;
-  let dy = e.touches[0].clientY - origin.y;
-  targetX += dx * 0.8; targetY += dy * 0.8;
+  movePlayer(e.touches[0]);
+});
+canvas.addEventListener("touchend", () => {
+  dragging = false;
+});
+
+function movePlayer(touch) {
+  const rect = canvas.getBoundingClientRect();
+  const touchX = touch.clientX - rect.left;
+  const touchY = touch.clientY - rect.top;
+  targetX = touchX - player.width / 2;
+  targetY = touchY - player.height / 2;
   targetX = Math.max(0, Math.min(canvas.width - player.width, targetX));
   targetY = Math.max(0, Math.min(canvas.height - player.height, targetY));
-  origin.x = e.touches[0].clientX;
-  origin.y = e.touches[0].clientY;
-});
-joystick.addEventListener("touchend", () => dragging = false);
+}
+
 updateLivesDisplay();
 gameLoop();
-</script>
-</body>
+</script></body>
 </html>
